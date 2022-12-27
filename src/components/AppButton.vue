@@ -18,7 +18,9 @@
           <h3 class="btn-text">
             {{ props.btnText }}
           </h3>
-          <span class="timer" v-if="props.showTimer"
+          <span
+            :class="['timer', { white: currentColor === 'danger' }]"
+            v-if="props.showTimer"
             >{{ displayMinutes }} : {{ displaySeconds }}</span
           >
         </button>
@@ -175,6 +177,10 @@ watch(
   padding: 6px 12px;
   border-radius: 12px;
   margin-left: 4px;
+}
+
+.timer.white {
+  background-color: var(--disabled);
 }
 
 @media (max-width: 640px) {
