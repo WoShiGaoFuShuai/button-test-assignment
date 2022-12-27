@@ -38,17 +38,37 @@
           <button @click="resetIcon" class="casual-btn">reset</button>
         </div>
       </div>
+
+      <div class="settings-link">
+        <h3 class="settings-title">
+          Do you want to change the button to a link?
+        </h3>
+        <label class="label-link"
+          >Yes
+          <input
+            @change="buttonOrLink"
+            class="input-link"
+            type="checkbox"
+            v-model="isLink"
+          />
+        </label>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from '@vue/runtime-core';
+import { computed, ref } from '@vue/runtime-core';
 import { colors } from '../assets/settingsData/settingsData.js';
 import { icons } from '../assets/settingsData/settingsData.js';
 
-//EMITS
-const emit = defineEmits(['changeColor', 'changeIcon', 'resetIcon']);
+//EMITS ////////////////////////////////
+const emit = defineEmits([
+  'changeColor',
+  'changeIcon',
+  'resetIcon',
+  'changeToLinkOrButton',
+]);
 
 const changeColor = (classname) => {
   emit('changeColor', classname);
@@ -62,7 +82,13 @@ const resetIcon = () => {
   emit('resetIcon');
 };
 
-// const icons = [{ icon: require('../assets/settingsData/imgs/Big-arrow.svg') }];
+// DATA /////////////////////////////
+const isLink = ref(false);
+
+//FUNCTIONS //////////////////
+const buttonOrLink = () => {
+  emit('changeToLinkOrButton', isLink);
+};
 </script>
 
 <style scoped>
@@ -103,7 +129,10 @@ const resetIcon = () => {
   transform: scale(1.2);
 }
 
-/* // icons content */
+/* // ICONS */
+.settings-icons {
+  margin-bottom: 26px;
+}
 
 .icons-content {
   display: flex;
@@ -135,5 +164,17 @@ const resetIcon = () => {
 .casual-btn:hover {
   transform: scale(1.05);
   background-color: #a83cbe;
+}
+
+/* /////////LABEL */
+.label-link {
+  color: var(--disabled);
+  font-size: 20px;
+}
+
+.input-link {
+  margin-left: 20px;
+  width: 16px;
+  height: 16px;
 }
 </style>

@@ -1,9 +1,15 @@
 <template>
-  <AppButton :currentColor="currentColor" :currentIcon="currentIcon" />
+  <AppButton
+    :currentColor="currentColor"
+    :currentIcon="currentIcon"
+    :isLink="isLink"
+    :btnText="btnText"
+  />
   <AppSettings
     @changeColor="setColorToButton"
     @changeIcon="setIconToButton"
     @resetIcon="resetIcon"
+    @changeToLinkOrButton="changeToLinkOrButton"
   />
 </template>
 
@@ -12,6 +18,7 @@ import { ref } from '@vue/reactivity';
 import AppButton from './components/AppButton.vue';
 import AppSettings from './components/AppSettings.vue';
 
+// FUNCTIONS ////////////////////////////////////////////
 const setColorToButton = (value) => {
   currentColor.value = value;
 };
@@ -61,8 +68,20 @@ const resetIcon = () => {
   currentIcon.value = null;
 };
 
+const changeToLinkOrButton = (payload) => {
+  isLink.value = payload.value;
+  if (isLink.value) {
+    btnText.value = 'Напомнить PIN-код';
+  } else {
+    btnText.value = 'Отправить письмо';
+  }
+};
+
+// DATA //////////////////////////////
 const currentColor = ref('primary');
 const currentIcon = ref(null);
+const isLink = ref(false);
+const btnText = ref('Отправить письмо');
 </script>
 
 <style scoped></style>
