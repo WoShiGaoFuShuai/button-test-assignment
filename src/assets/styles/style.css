@@ -3,6 +3,14 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
+  --bg-color: #1E1E1E;
+  --primary: #702C7E;
+  --secondary: #C4296C;
+  --warning: #F4BA46;
+  --disabled: #EFEFEF;
+  --info: #0083B6;
+  --danger: #DF3F3E;
+  --action: #ED732E;
 
 }
 
@@ -10,4 +18,34 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  list-style:none;
+ }
+
+ #app {
+  background-color: var(--bg-color);
+  height: 100vh;
+  padding: 20px 10px;
+ }
+
+.primary {
+  background-color: var(--primary);
+  }
+
+ .secondary {
+   background-color: var(--secondary);
+  }
+ .warning {
+   background-color: var(--warning);
+  }
+ .disabled { 
+   background-color: var(--disabled);
+ }
+ .info { 
+   background-color: var(--info);
+ }
+ .danger {
+   background-color: var(--danger);
+  }
+ .action { 
+   background-color: var(--action);
  }
