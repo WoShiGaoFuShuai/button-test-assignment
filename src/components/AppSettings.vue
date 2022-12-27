@@ -53,12 +53,31 @@
           />
         </label>
       </div>
+
+      <div :class="['settings-timer', { hide: isLink }]">
+        <h3 class="settings-title">Do you want to add timer?</h3>
+        <div class="timer-content">
+          <label class="label-timer"
+            >Yes
+            <input
+              @change="toggleTimer"
+              class="input-timer"
+              type="checkbox"
+              v-model="showTimer"
+              :disabled="showTimer"
+            />
+          </label>
+          <button @click="resetTimer" class="btn-timer casual-btn">
+            reset
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from '@vue/runtime-core';
+import { onMounted, ref } from '@vue/runtime-core';
 import { colors } from '../assets/settingsData/settingsData.js';
 import { icons } from '../assets/settingsData/settingsData.js';
 
@@ -68,6 +87,7 @@ const emit = defineEmits([
   'changeIcon',
   'resetIcon',
   'changeToLinkOrButton',
+  'showTimer',
 ]);
 
 const changeColor = (classname) => {
@@ -82,13 +102,37 @@ const resetIcon = () => {
   emit('resetIcon');
 };
 
+const toggleTimer = () => {
+  emit('showTimer', showTimer);
+};
+
 // DATA /////////////////////////////
 const isLink = ref(false);
+const showTimer = ref(false);
 
 //FUNCTIONS //////////////////
 const buttonOrLink = () => {
+  if (isLink) {
+    showTimer.value = false;
+    resetTimer();
+  }
   emit('changeToLinkOrButton', isLink);
 };
+
+const resetTimer = () => {
+  showTimer.value = false;
+  emit('showTimer', showTimer);
+};
+
+//HOOKS
+onMounted(() => {
+  let body = document.querySelector('body');
+  window.addEventListener('resize', () => {
+    if (body.offsetWidth <= 640) {
+      resetTimer();
+    }
+  });
+});
 </script>
 
 <style scoped>
@@ -100,7 +144,7 @@ const buttonOrLink = () => {
   text-align: center;
   font-size: 26px;
   color: var(--disabled);
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .settings-color {
@@ -114,6 +158,7 @@ const buttonOrLink = () => {
 
 .settings-ul {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .settings-li {
@@ -123,6 +168,7 @@ const buttonOrLink = () => {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.5s transform ease-in;
+  margin-bottom: 8px;
 }
 
 .settings-li:hover {
@@ -137,6 +183,7 @@ const buttonOrLink = () => {
 .icons-content {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .icons-item {
@@ -166,15 +213,42 @@ const buttonOrLink = () => {
   background-color: #a83cbe;
 }
 
-/* /////////LABEL */
-.label-link {
+/* /////////LINK & TIMER */
+
+.settings-link {
+  margin-bottom: 26px;
+}
+
+.label-link,
+.label-timer {
   color: var(--disabled);
   font-size: 20px;
 }
 
-.input-link {
+.input-link,
+.input-timer {
   margin-left: 20px;
   width: 16px;
   height: 16px;
+}
+
+/* TIMER */
+.btn-timer.casual-btn {
+  margin-left: 20px;
+}
+
+.timer-content {
+  display: flex;
+  align-items: center;
+}
+
+.settings-timer.hide {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .settings-timer {
+    display: none;
+  }
 }
 </style>

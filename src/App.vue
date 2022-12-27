@@ -4,12 +4,14 @@
     :currentIcon="currentIcon"
     :isLink="isLink"
     :btnText="btnText"
+    :showTimer="showTimer"
   />
   <AppSettings
     @changeColor="setColorToButton"
     @changeIcon="setIconToButton"
     @resetIcon="resetIcon"
     @changeToLinkOrButton="changeToLinkOrButton"
+    @showTimer="showTimerInButton"
   />
 </template>
 
@@ -77,11 +79,23 @@ const changeToLinkOrButton = (payload) => {
   }
 };
 
+const showTimerInButton = (payload) => {
+  showTimer.value = payload.value;
+  if (payload.value) {
+    btnText.value = 'Повторное письмо';
+    currentColor.value = 'disabled';
+  } else {
+    btnText.value = 'Отправить письмо';
+    currentColor.value = 'primary';
+  }
+};
+
 // DATA //////////////////////////////
 const currentColor = ref('primary');
 const currentIcon = ref(null);
 const isLink = ref(false);
 const btnText = ref('Отправить письмо');
+const showTimer = ref(false);
 </script>
 
 <style scoped></style>
